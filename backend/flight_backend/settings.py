@@ -15,6 +15,12 @@ TEMPLATES = [ { 'BACKEND': 'django.template.backends.django.DjangoTemplates', 'D
 
 WSGI_APPLICATION = 'flight_backend.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
 DATABASES ={
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

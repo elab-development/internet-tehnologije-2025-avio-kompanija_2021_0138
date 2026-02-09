@@ -17,14 +17,27 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from core.views import lista_letova, LetViewSet, AerodromViewSet
-
+from core.views import lista_letova, LetViewSet, AerodromViewSet, AvioPonudaViewSet
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from core.views import RegisterView
+# 1. Podešavanje rutera za ViewSet-ove (automatski API)
 router = DefaultRouter()
-router.register(r'api/letovi', LetViewSet)
-router.register(r'api/aerodromi', AerodromViewSet)
+router.register(r'letovi', LetViewSet)
+router.register(r'aerodromi', AerodromViewSet)
+router.register(r'ponude', AvioPonudaViewSet)
 
+# 2. Jedinstvena lista putanja
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
-    path('lista-letova/', lista_letova),
+    
+    # Sve rute iz rutera će sada biti dostupne na http://127.0.0.1:8000/api/...
+    path('api/', include(router.urls)),
+    
+    # Tvoja posebna funkcija (ako ti i dalje treba odvojeno)
+    path('api/lista-stara/', lista_letova),
+      # ... tvoje postojeće rute ...
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/register/', RegisterView.as_view(), name='auth_register'),
 ]
+

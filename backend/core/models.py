@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class Let(models.Model):
     relacija = models.CharField(max_length=100)
     vreme_polaska = models.DateTimeField() 
-    aviokompanija = models.CharField(max_length=100, default='Air Serbia')
+    aviokompanija = models.CharField(max_length=200, default='Air Serbia')
     polaziste = models.ForeignKey('Aerodrom', on_delete=models.CASCADE, related_name='polaziste_letovi', null=True, blank=True)
     odrediste = models.ForeignKey('Aerodrom', on_delete=models.CASCADE, related_name='odrediste_letovi', null=True, blank=True)
     def __str__(self):
