@@ -53,6 +53,7 @@ class Aerodrom(models.Model):
         return f"{self.naziv} ({self.skracenica})"
 
 class ProfilKorisnika(models.Model): 
+    korisnik = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     ULOGE = ( ('admin', 'Administrator'),('radnik', 'Radnik'), ('putnik', 'Putnik'))
     telefon = models.CharField(max_length=20, blank=True, null=True)
     tip_korisnika = models.CharField(max_length=20, choices=ULOGE, default='putnik')
