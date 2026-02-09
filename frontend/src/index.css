@@ -1,0 +1,289 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 230 25% 97%;
+    --foreground: 240 20% 16%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 20% 16%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 20% 16%;
+
+    --primary: 200 72% 56%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 248 45% 93%;
+    --secondary-foreground: 248 40% 40%;
+
+    --muted: 230 18% 93%;
+    --muted-foreground: 230 12% 48%;
+
+    --accent: 248 55% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 152 60% 48%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 90% 55%;
+    --warning-foreground: 38 90% 18%;
+
+    --border: 230 18% 90%;
+    --input: 230 18% 90%;
+    --ring: 200 72% 56%;
+
+    --radius: 1rem;
+
+    /* CelesteAir palette */
+    --celeste: 197 71% 73%;
+    --celeste-foreground: 240 20% 16%;
+    --lavender: 240 67% 94%;
+    --lavender-foreground: 248 40% 35%;
+    --sky: 200 72% 56%;
+    --sky-foreground: 0 0% 100%;
+    --navy: 240 30% 16%;
+    --navy-foreground: 230 25% 95%;
+    --rose: 340 65% 70%;
+    --rose-foreground: 0 0% 100%;
+
+    /* Glass */
+    --glass: 0 0% 100% / 0.55;
+    --glass-border: 0 0% 100% / 0.25;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(200 72% 56%) 0%, hsl(248 55% 65%) 55%, hsl(280 48% 68%) 100%);
+    --gradient-celeste: linear-gradient(135deg, hsl(197 71% 73%) 0%, hsl(248 55% 75%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100% / 0.85) 0%, hsl(240 67% 94% / 0.5) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(200 72% 56%) 0%, hsl(248 55% 65%) 100%);
+    --gradient-sky: linear-gradient(180deg, hsl(200 72% 56% / 0.06) 0%, hsl(248 55% 65% / 0.03) 50%, transparent 100%);
+    --gradient-glow: radial-gradient(ellipse at 50% 0%, hsl(200 72% 56% / 0.15) 0%, transparent 70%);
+
+    /* Shadows */
+    --shadow-card: 0 4px 24px -4px hsl(248 55% 65% / 0.1), 0 1px 4px hsl(248 55% 65% / 0.06);
+    --shadow-card-hover: 0 20px 48px -12px hsl(248 55% 65% / 0.18), 0 4px 12px hsl(248 55% 65% / 0.08);
+    --shadow-nav: 0 4px 30px -2px hsl(248 55% 65% / 0.06);
+    --shadow-glow: 0 0 24px hsl(200 72% 56% / 0.25), 0 0 60px hsl(248 55% 65% / 0.1);
+    --shadow-button: 0 4px 16px -2px hsl(200 72% 56% / 0.35);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 240 20% 7%;
+    --foreground: 230 25% 95%;
+    --card: 240 18% 11%;
+    --card-foreground: 230 25% 95%;
+    --popover: 240 18% 11%;
+    --popover-foreground: 230 25% 95%;
+    --primary: 200 72% 56%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 248 25% 18%;
+    --secondary-foreground: 248 40% 80%;
+    --muted: 240 12% 15%;
+    --muted-foreground: 230 12% 58%;
+    --accent: 248 45% 52%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 152 50% 38%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 80% 45%;
+    --warning-foreground: 0 0% 100%;
+    --border: 240 12% 18%;
+    --input: 240 12% 18%;
+    --ring: 200 72% 56%;
+
+    --celeste: 197 60% 40%;
+    --celeste-foreground: 230 25% 95%;
+    --lavender: 248 30% 20%;
+    --lavender-foreground: 248 40% 80%;
+    --sky: 200 60% 45%;
+    --sky-foreground: 0 0% 100%;
+    --navy: 240 30% 85%;
+    --navy-foreground: 240 20% 7%;
+    --rose: 340 50% 55%;
+    --rose-foreground: 0 0% 100%;
+
+    --glass: 240 18% 11% / 0.75;
+    --glass-border: 248 45% 52% / 0.1;
+
+    --gradient-hero: linear-gradient(135deg, hsl(200 72% 45%) 0%, hsl(248 45% 52%) 55%, hsl(280 38% 50%) 100%);
+    --gradient-celeste: linear-gradient(135deg, hsl(197 60% 40%) 0%, hsl(248 45% 45%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(240 18% 14% / 0.85) 0%, hsl(248 30% 20% / 0.5) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(200 72% 45%) 0%, hsl(248 45% 52%) 100%);
+    --gradient-sky: linear-gradient(180deg, hsl(200 72% 45% / 0.1) 0%, hsl(248 45% 52% / 0.05) 50%, transparent 100%);
+    --gradient-glow: radial-gradient(ellipse at 50% 0%, hsl(200 72% 45% / 0.2) 0%, transparent 70%);
+
+    --shadow-card: 0 4px 24px -4px hsl(0 0% 0% / 0.3), 0 1px 4px hsl(0 0% 0% / 0.2);
+    --shadow-card-hover: 0 20px 48px -12px hsl(248 45% 52% / 0.25), 0 4px 12px hsl(0 0% 0% / 0.2);
+    --shadow-nav: 0 4px 30px -2px hsl(0 0% 0% / 0.3);
+    --shadow-glow: 0 0 24px hsl(200 72% 45% / 0.3), 0 0 60px hsl(248 45% 52% / 0.15);
+    --shadow-button: 0 4px 16px -2px hsl(200 72% 45% / 0.4);
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer utilities {
+  .text-gradient-hero {
+    background: var(--gradient-hero);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .bg-gradient-celeste {
+    background: var(--gradient-celeste);
+  }
+
+  .bg-gradient-gold {
+    background: var(--gradient-gold);
+  }
+
+  .bg-gradient-sky {
+    background: var(--gradient-sky);
+  }
+
+  .bg-gradient-card {
+    background: var(--gradient-card);
+  }
+
+  .bg-gradient-glow {
+    background: var(--gradient-glow);
+  }
+
+  .glass {
+    background: hsl(var(--glass));
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+    border: 1px solid hsl(var(--glass-border));
+  }
+
+  .dark .glass {
+    background: hsl(240 18% 11% / 0.75);
+    border: 1px solid hsl(248 45% 52% / 0.1);
+  }
+
+  .glass-strong {
+    background: hsl(0 0% 100% / 0.78);
+    backdrop-filter: blur(40px) saturate(1.4);
+    -webkit-backdrop-filter: blur(40px) saturate(1.4);
+    border: 1px solid hsl(0 0% 100% / 0.45);
+  }
+
+  .dark .glass-strong {
+    background: hsl(240 18% 14% / 0.85);
+    border: 1px solid hsl(248 45% 52% / 0.15);
+  }
+
+  .glass-card {
+    background: hsl(0 0% 100% / 0.65);
+    backdrop-filter: blur(32px) saturate(1.3);
+    -webkit-backdrop-filter: blur(32px) saturate(1.3);
+    border: 1px solid hsl(0 0% 100% / 0.35);
+  }
+
+  .dark .glass-card {
+    background: hsl(240 18% 14% / 0.7);
+    border: 1px solid hsl(248 45% 52% / 0.12);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-card-hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .shadow-nav {
+    box-shadow: var(--shadow-nav);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-button {
+    box-shadow: var(--shadow-button);
+  }
+
+  .glow-primary {
+    box-shadow: 0 0 20px hsl(200 72% 56% / 0.35), 0 0 60px hsl(248 55% 65% / 0.12);
+  }
+
+  /* Ticket dashed border */
+  .ticket-cut {
+    position: relative;
+  }
+
+  .ticket-cut::before,
+  .ticket-cut::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: hsl(var(--background));
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  .ticket-cut::before {
+    left: -12px;
+  }
+
+  .ticket-cut::after {
+    right: -12px;
+  }
+
+  /* Scrollbar hide */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
