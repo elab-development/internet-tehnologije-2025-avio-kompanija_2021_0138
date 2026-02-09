@@ -5,18 +5,18 @@ class Let(models.Model):
     relacija = models.CharField(max_length=100)
     vreme_polaska = models.DateTimeField() 
     aviokompanija = models.CharField(max_length=100, default='Air Serbia')
-    odrediste = models.ForeignKey('Aerodrom', on_delete=models.CASCADE, related_name='odrediste_letovi')
-    polaziste = models.ForeignKey('Aerodrom', on_delete=models.CASCADE, related_name='polaziste_letovi')
+    polaziste = models.ForeignKey('Aerodrom', on_delete=models.CASCADE, related_name='polaziste_letovi', null=True, blank=True)
+    odrediste = models.ForeignKey('Aerodrom', on_delete=models.CASCADE, related_name='odrediste_letovi', null=True, blank=True)
     def __str__(self):
         return f"{self.relacija} - {self.aviokompanija} ({self.vreme_polaska})"
 
 
 
 class AvioPonuda(models.Model): 
-    let = models.ForeignKey(Let, on_delete=models.CASCADE)
-    cena = models.DecimalField(max_digits=10, decimal_places=2)
-    klasa = models.CharField(max_length=50)
-    def str(self):
+    let = models.ForeignKey(Let, on_delete=models.CASCADE, null=True, blank=True)
+    cena = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    klasa = models.CharField(max_length=50, default='Ekonomska')
+    def __str__(self):
         return f"{self.let.relacija} - {self.let.aviokompanija} ({self.klasa}) - {self.cena} RSD"
 
 class Rezervacija(models.Model): 
@@ -27,7 +27,7 @@ class Rezervacija(models.Model):
         return f"Rezervacija: {self.korisnik.username} - {self.ponuda.let.relacija} ({self.ponuda.klasa}) - {self.ponuda.cena} RSD"
 
 class PracenjeCena(models.Model): 
-        korisnik = models.ForeignKey(User, on_delete=models.CASCADE) 
+    korisnik = models.ForeignKey(User, on_delete=models.CASCADE) 
     let = models.ForeignKey(Let, on_delete=models.CASCADE) 
     limit_cene = models.DecimalField(max_digits=10, decimal_places=2)
     def __str__(self):
@@ -35,19 +35,13 @@ class PracenjeCena(models.Model):
 
 
 class ZakljucavanjePonude(models.Model):
-    ponuda = models.ForeignKey(AvioPonuda, on_delete=models.CASCADE)
-    # Evo tvoj Da/Ne (True/False) prekidač
+    avio_ponuda = models.ForeignKey(AvioPonuda, on_delete=models.CASCADE, null=True, blank=True)
     je_zakljucano = models.BooleanField(default=False)
     datum_vreme = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         status = "DA" if self.je_zakljucano else "NE"
-        return f"Zaključano: {status} - {self.ponuda.let.relacija}"
-
-
-
-
-
+        return f"Zaključano: {status} - {self.avio_ponuda.let.relacija}"
 
 
 class Aerodrom(models.Model): 
@@ -56,15 +50,13 @@ class Aerodrom(models.Model):
     grad = models.CharField(max_length=255)
 
     def __str__(self):
-    return f"{self.naziv} ({self.skracenica})"
+        return f"{self.naziv} ({self.skracenica})"
 
 class ProfilKorisnika(models.Model): 
     ULOGE = ( ('admin', 'Administrator'),('radnik', 'Radnik'), ('putnik', 'Putnik'))
-    korisnik = models.OneToOneField('auth.User', on_delete=models.CASCADE) 
+    telefon = models.CharField(max_length=20, blank=True, null=True)
+    tip_korisnika = models.CharField(max_length=20, choices=ULOGE, default='putnik')
     uloga = models.CharField(max_length=20, choices=ULOGE, default='putnik') 
-    telefon = models.CharField(max_length=20, blank=True)
 
-    def str(self): 
-    return f"{self.korisnik.username} - {self.uloga}"
-
-
+    def __str__(self): 
+        return f"{self.korisnik.username} - {self.uloga}"

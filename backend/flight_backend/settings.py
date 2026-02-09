@@ -15,8 +15,13 @@ TEMPLATES = [ { 'BACKEND': 'django.template.backends.django.DjangoTemplates', 'D
 
 WSGI_APPLICATION = 'flight_backend.wsgi.application'
 
-DATABASES = { 'default': { 'ENGINE': 'django.db.backends.mysql', 'NAME': 'avio_kompanija_db', 'USER': 'root', 'PASSWORD': 'root123', 'HOST': '127.0.0.1', 'PORT': '3306', } }
- 
+DATABASES ={
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
