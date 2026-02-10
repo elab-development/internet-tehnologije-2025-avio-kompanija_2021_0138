@@ -7,44 +7,7 @@ import SortDropdown, { type SortOption } from "@/components/SortDropdown";
 import EmptyState from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 
-const mockFlights: Flight[] = [
-  {
-    id: 1, broj_leta: "CA-101", aviokompanija: "Air Serbia",
-    polaziste: "Beograd", odrediste: "London",
-    vreme_polaska: "08:30", vreme_dolaska: "10:45",
-    cena: 24500, status: "na_vreme", trend_cene: "raste", najniza_cena: false,
-  },
-  {
-    id: 2, broj_leta: "CA-205", aviokompanija: "CelesteAir",
-    polaziste: "Beograd", odrediste: "Pariz",
-    vreme_polaska: "12:15", vreme_dolaska: "14:30",
-    cena: 19800, status: "na_vreme", trend_cene: "pada", najniza_cena: true,
-  },
-  {
-    id: 3, broj_leta: "LH-440", aviokompanija: "Lufthansa",
-    polaziste: "Beograd", odrediste: "Frankfurt",
-    vreme_polaska: "06:00", vreme_dolaska: "07:45",
-    cena: 15200, status: "kasni", trend_cene: "stabilna", najniza_cena: false,
-  },
-  {
-    id: 4, broj_leta: "TK-812", aviokompanija: "Turkish Airlines",
-    polaziste: "Beograd", odrediste: "Istanbul",
-    vreme_polaska: "16:45", vreme_dolaska: "19:30",
-    cena: 12900, status: "na_vreme", trend_cene: "pada", najniza_cena: true,
-  },
-  {
-    id: 5, broj_leta: "W6-301", aviokompanija: "Wizz Air",
-    polaziste: "Beograd", odrediste: "Berlin",
-    vreme_polaska: "09:00", vreme_dolaska: "10:50",
-    cena: 8700, status: "otkazan", trend_cene: "stabilna", najniza_cena: false,
-  },
-  {
-    id: 6, broj_leta: "CA-333", aviokompanija: "Air Serbia",
-    polaziste: "Beograd", odrediste: "Rim",
-    vreme_polaska: "14:00", vreme_dolaska: "15:40",
-    cena: 17300, status: "na_vreme", trend_cene: "raste", najniza_cena: false,
-  },
-];
+const mockFlights: Flight[] = [];
 
 const Flights = () => {
   const [flights, setFlights] = useState<Flight[]>([]);
@@ -58,30 +21,37 @@ const Flights = () => {
     const fetchFlights = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://127.0.0.1:8000/api/letovi-api/");
+        const response = await fetch("http://127.0.0.1:8000/api/letovi/");       
         if (!response.ok) throw new Error("Greška pri učitavanju letova");
         const data = await response.json();
-        const mapped: Flight[] = data.map((item: Record<string, unknown>) => ({
-          id: item.id,
-          broj_leta: item.broj_leta || "",
-          aviokompanija: item.aviokompanija || "",
-          polaziste: item.polaziste || "",
-          odrediste: item.odrediste || "",
-          vreme_polaska: item.vreme_polaska || "",
-          vreme_dolaska: item.vreme_dolaska || "",
-          cena: item.cena || 0,
-          status: item.status || "na_vreme",
-          trend_cene: item.trend_cene || "stabilna",
-          najniza_cena: item.najniza_cena || false,
-        }));
+       const mapped: Flight[] = data.map((item: any) => ({
+  id: item.id,
+  // Broj leta verovatno treba da bude 'relacija' ili neki drugi podatak iz baze
+  broj_leta: item.relacija || "Nepoznato", 
+  aviokompanija: item.aviokompanija || "Air Serbia",
+  
+  // Ovde pristupamo gradu unutar objekata polaziste i odrediste
+  polaziste: item.polaziste?.grad || "Beograd", 
+  odrediste: item.odrediste?.grad || "Pariz",
+  
+  // Vreme polaska iz baze (možda ćeš morati da ga skratiš jer je u ISO formatu)
+  vreme_polaska: item.vreme_polaska ? item.vreme_polaska.substring(11, 16) : "--:--",
+  vreme_dolaska: "--:--", // Dodaj ako Ognjen doda ovo polje u bazu
+  
+  cena: item.cena || 0,
+  status: "na_vreme",
+  trend_cene: "stabilna",
+  najniza_cena: false,
+}));
         setFlights(mapped);
       } catch (err) {
-        console.warn("API nije dostupan, prikazujem demo podatke:", err);
-        setFlights(mockFlights);
+        console.error("Greška:", err);
+        setError("Nije moguće učitati letove iz baze.");
       } finally {
         setLoading(false);
       }
     };
+
     fetchFlights();
   }, []);
 
