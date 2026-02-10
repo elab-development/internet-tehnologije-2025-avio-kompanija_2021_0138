@@ -35,7 +35,7 @@ const PersonalizedGreeting = ({ user }: { user: UserProfile }) => {
       <div className="hidden sm:block">
         <p className="text-xs text-muted-foreground font-medium leading-none">Dobro došli nazad</p>
         <p className="text-sm font-display font-semibold text-foreground leading-tight mt-0.5">
-          Zdravo, {user.name}! ✨
+          Zdravo {user.name}! ✨
         </p>
       </div>
 

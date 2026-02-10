@@ -11,11 +11,11 @@ const navItems = [
   { label: "Letovi", path: "/letovi" },
   { label: "Moje Rezervacije", path: "/rezervacije" },
 ];
-
 const mockUser = {
-  name: "Teodora",
+  name: "",  
   hasNotification: true,
 };
+
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
