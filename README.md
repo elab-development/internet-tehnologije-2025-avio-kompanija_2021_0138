@@ -1,39 +1,42 @@
-# Celeste Air
+# Celeste Air - Flight Management System
 
-Ovaj projekat je Django aplikacija za upravljanje letovima i aerodromima.
+Sistem za upravljanje avio-saobraćajem razvijen kao projekat u okviru predmeta Internet tehnologije. Aplikacija omogućava krajnjim korisnicima pretragu letova i upravljanje rezervacijama, dok administratorima pruža uvid u resurse kompanije.
 
-## Kako pokrenuti aplikaciju
+## Tim
+* **Teodora Erić- Frontend razvoj i UI/UX dizajn
+* **Ognjen Obradović- Backend razvoj i API arhitektura
 
-### 1. Baza podataka
-Pre nego što pokrenete aplikaciju, proverite da li imate instaliran **MySQL** i da li ste kreirali bazu podataka:
+## Implementirane tehnologije
 
+### Frontend (Klijentska strana)
+Aplikacija je realizovana kao **Single Page Application (SPA)** koristeći sledeći stek:
+- **React.js (Vite)** – Za efikasno upravljanje komponentama i brzi razvoj.
+- **TypeScript** – Statistička tipizacija radi osiguravanja stabilnosti koda i precizne definicije modela.
+- **Tailwind CSS** – Za moderan, responzivan dizajn i konzistentan vizuelni identitet (Celeste Air brending).
+- **React Router DOM** – Za upravljanje navigacijom i rutama unutar aplikacije.
 
-### 2. Instalacija zavisnosti
-Otvorite terminal u folderu `backend/` i pokrenite:
-```bash
-pip install -r requirements.txt
-```
+### Backend (Serverska strana)
+Serverska logika i perzistencija podataka oslanjaju se na:
+- **Django REST Framework (DRF)** – Za izgradnju skalabilnog i standardizovanog API-ja.
+- **Relaciona baza podataka** – Za čuvanje entiteta sistema (letovi, korisnici, rezervacije).
+- **CORS Headers** – Omogućena bezbedna komunikacija između različitih domena klijenta i servera.
 
-### 3. Migracije baze podataka
-U istom terminalu, primenite migracije da biste kreirali tabele:
-```bash
-python manage.py migrate
-```
+## Osnovni moduli i funkcionalnosti
 
-### 4. Pokretanje servera
-Sada možete pokrenuti razvojni server:
-```bash
-python manage.py runserver
-```
-Aplikacija će biti dostupna na: `http://127.0.0.1:8000/`
+### 1. Dinamička pretraga i filtriranje
+Implementiran je sistem za filtriranje podataka u realnom vremenu korišćenjem React `useState` kuke. Korisnici mogu pretraživati letove na osnovu:
+- Destinacije (polazni i dolazni aerodromi)
+- Opsega cene karte
+- Datuma i vremena poletanja
 
-### 5. Punjenje baze podacima (Opciono)
-Ako želite da povučete stvarne letove sa AviationStack API-ja, pokrenite:
-```bash
-python dohvati_letove.py
-```
+### 2. Upravljanje podacima (Modeli)
+Baza podataka je strukturirana kroz 5 ključnih, međusobno povezanih entiteta:
+- **User** (Autentifikacija, profili i uloge korisnika)
+- **Flight** (Detaljni podaci o terminima i rutama)
+- **Reservation** (Relacija između korisnika i odabranog leta)
+- **Destination** (Geografski podaci o aerodromima)
+- **Plane** (Tehnički podaci o floti avio-kompanije)
 
-## API Krajnje tačke (Endpoints)
-- `http://127.0.0.1:8000/api/letovi/` - REST API za letove
-- `http://127.0.0.1:8000/api/aerodromi/` - REST API za aerodrome
-- `http://127.0.0.1:8000/admin/` - Django Admin panel
+### 3. Korisničko iskustvo (UI/UX)
+- **Interaktivni modali**: Upotreba komponenti za unos podataka bez napuštanja trenutnog konteksta stranice.
+- **Validacija**: Provera unosa na frontend i backend nivou radi očuvanja integriteta podataka.
