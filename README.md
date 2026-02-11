@@ -1,4 +1,4 @@
-# Avio Kompanija Projekat
+# Celeste Air
 
 Ovaj projekat je Django aplikacija za upravljanje letovima i aerodromima.
 
@@ -6,9 +6,7 @@ Ovaj projekat je Django aplikacija za upravljanje letovima i aerodromima.
 
 ### 1. Baza podataka
 Pre nego što pokrenete aplikaciju, proverite da li imate instaliran **MySQL** i da li ste kreirali bazu podataka:
-- **Ime baze:** `avio_kompanija_db`
-- **Korisnik:** `root`
-- **Šifra:** `admin123!` (možete izmeniti u `backend/flight_backend/settings.py` ako koristite drugu šifru)
+
 
 ### 2. Instalacija zavisnosti
 Otvorite terminal u folderu `backend/` i pokrenite:
