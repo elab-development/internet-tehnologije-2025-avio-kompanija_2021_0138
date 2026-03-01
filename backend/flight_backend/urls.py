@@ -26,16 +26,16 @@ router.register(r'letovi', LetViewSet)
 router.register(r'aerodromi', AerodromViewSet)
 router.register(r'ponude', AvioPonudaViewSet)
 
-# 2. Jedinstvena lista putanja
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # Sve rute iz rutera će sada biti dostupne na http://127.0.0.1:8000/api/...
+    # Sve rute iz rutera na http://127.0.0.1:8000/api/...
     path('api/', include(router.urls)),
     
-    # Tvoja posebna funkcija (ako ti i dalje treba odvojeno)
+    
     path('api/lista-stara/', lista_letova),
-      # ... tvoje postojeće rute ...
+    
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', RegisterView.as_view(), name='auth_register'),

@@ -26,17 +26,16 @@ const Flights = () => {
         const data = await response.json();
        const mapped: Flight[] = data.map((item: any) => ({
   id: item.id,
-  // Broj leta verovatno treba da bude 'relacija' ili neki drugi podatak iz baze
+  
   broj_leta: item.relacija || "Nepoznato", 
   aviokompanija: item.aviokompanija || "Air Serbia",
   
-  // Ovde pristupamo gradu unutar objekata polaziste i odrediste
+  
   polaziste: item.polaziste?.grad || "Beograd", 
   odrediste: item.odrediste?.grad || "Pariz",
   
-  // Vreme polaska iz baze (možda ćeš morati da ga skratiš jer je u ISO formatu)
   vreme_polaska: item.vreme_polaska ? item.vreme_polaska.substring(11, 16) : "--:--",
-  vreme_dolaska: "--:--", // Dodaj ako Ognjen doda ovo polje u bazu
+  vreme_dolaska: "--:--",
   
   cena: item.cena || 0,
   status: "na_vreme",
@@ -58,7 +57,6 @@ const Flights = () => {
   const airlines = useMemo(() => [...new Set(flights.map((f) => f.aviokompanija))], [flights]);
   const maxPrice = useMemo(() => Math.max(...flights.map((f) => f.cena), 0), [flights]);
 
-  // Calculate CelesteAir Favorit — best balance of low price + short travel time
   const favoritId = useMemo(() => {
     const eligible = flights.filter((f) => f.status !== "otkazan" && f.vreme_dolaska);
     if (eligible.length === 0) return null;

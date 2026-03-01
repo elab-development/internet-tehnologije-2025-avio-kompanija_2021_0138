@@ -11,7 +11,7 @@ class Let(models.Model):
         return f"{self.relacija} - {self.aviokompanija} ({self.vreme_polaska})"
 
 
-
+#12345
 class AvioPonuda(models.Model): 
     let = models.ForeignKey(Let, on_delete=models.CASCADE, null=True, blank=True)
     cena = models.DecimalField(max_digits=10, decimal_places=2, default=0)

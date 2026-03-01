@@ -1,6 +1,7 @@
 Django==5.0.1
 djangorestframework
 django-cors-headers
-mysqlclient
 requests
-#Dodaj sve dependencije koji trebaju za projekat
+djangorestframework-simplejwt
+drf-spectacular
+python-dotenv
