@@ -48,9 +48,13 @@ class Aerodrom(models.Model):
     naziv = models.CharField(max_length=255) 
     skracenica = models.CharField(max_length=3) 
     grad = models.CharField(max_length=255)
+    # Dodajemo ova dva polja:
+    latituda = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longituda = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.naziv} ({self.skracenica})"
+        return f"{self.naziv} ({self.skracenica}) - {self.grad}"
+
 
 class ProfilKorisnika(models.Model): 
     korisnik = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)

@@ -82,3 +82,34 @@ def konvertuj_cenu(request, let_id):
         return Response({"error": "Let sa tim ID-em ne postoji u bazi"}, status=404)
     except Exception as e:
         return Response({"error": f"Doslo je do greske: {str(e)}"}, status=500)
+
+
+@api_view(['GET'])
+def vremenska_prognoza(request, let_id):
+    try:
+        let = Let.objects.get(id=let_id)
+        odrediste = let.odrediste
+        
+        # Koristimo koordinate (ako ih nemaš u modelu, stavljamo BG kao default za test)
+        lat = getattr(odrediste, 'latituda', 44.78)
+        lon = getattr(odrediste, 'longituda', 20.44)
+        
+        # Poziv Open-Meteo API-ja
+        url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current_weather=true"
+        response = requests.get(url, timeout=5)
+        podaci = response.json()
+        
+        vreme = podaci.get('current_weather', {})
+        
+        return Response({
+            "grad": odrediste.grad,
+            "aerodrom": odrediste.naziv,
+            "temperatura": vreme.get('temperature'),
+            "brzina_vetra": vreme.get('windspeed'),
+            "jedinica": "Celsius",
+            "izvor": "Open-Meteo API"
+        })
+    except Let.DoesNotExist:
+        return Response({"error": "Let nije pronađen"}, status=404)
+    except Exception as e:
+        return Response({"error": f"Greška: {str(e)}"}, status=400)

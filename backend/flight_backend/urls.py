@@ -46,5 +46,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', RegisterView.as_view(), name='auth_register'),
     path('api/konvertuj/<int:let_id>/', views.konvertuj_cenu, name='konvertuj-cenu'),
+    path('api/vreme/<int:let_id>/', views.vremenska_prognoza, name='vremenska-prognoza'),
+    
     ]
 
