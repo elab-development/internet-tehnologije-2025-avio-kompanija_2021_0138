@@ -15,6 +15,21 @@ class LetSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Let 
         fields = '__all__'
+        # Validacija za polje 'broj_mesta'
+    def validate_broj_mesta(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Broj mesta mora biti veći od nule!")
+        return value
+    
+    def validate(self, data):
+        p = data.get('polaziste')
+        o = data.get('odrediste')
+        
+        if p == o:
+            raise serializers.ValidationError("Polazište i odredište ne mogu biti isti!")
+            
+        return data  # Ova linija MORA biti u istoj ravni kao "p = data.get..."
+
 
 class AvioPonudaSerializer(serializers.ModelSerializer):
     # Ova linija povezuje ponudu sa svim detaljima leta
@@ -41,3 +56,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+
+
+
+    
