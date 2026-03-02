@@ -20,7 +20,9 @@ from rest_framework.routers import DefaultRouter
 from core.views import lista_letova, LetViewSet, AerodromViewSet, AvioPonudaViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from core.views import RegisterView
-# 1. Podešavanje rutera za ViewSet-ove (automatski API)
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+
+
 router = DefaultRouter()
 router.register(r'letovi', LetViewSet)
 router.register(r'aerodromi', AerodromViewSet)
@@ -33,6 +35,9 @@ urlpatterns = [
     # Sve rute iz rutera na http://127.0.0.1:8000/api/...
     path('api/', include(router.urls)),
     
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+
     
     path('api/lista-stara/', lista_letova),
     
