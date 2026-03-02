@@ -6,30 +6,29 @@ class AerodromSerializer(serializers.ModelSerializer):
         model = Aerodrom 
         fields = '__all__'
 
-class LetSerializer(serializers.ModelSerializer): 
-    # Ova linija kaže: "Za polje polaziste, nemoj dati samo broj, 
-    # nego koristi AerodromSerializer da mi daš sve detalje"
-    polaziste = AerodromSerializer(read_only=True)
-    odrediste = AerodromSerializer(read_only=True)
+class LetSerializer(serializers.ModelSerializer):
+    # Polja za čitanje (da u Swaggeru vidiš lepo objekte)
+    # Ali ih ne stavljamo ovde kao primarna da ne bi blokirali upis!
 
-    class Meta: 
-        model = Let 
+    class Meta:
+        model = Let
         fields = '__all__'
-        # Validacija za polje 'broj_mesta'
+
+    def validate(self, data):
+        # Uzimamo podatke direktno iz rečnika
+        p = data.get('polaziste')
+        o = data.get('odrediste')
+
+        # Poređenje objekata ili ID-eva
+        if p is not None and o is not None and p == o:
+            raise serializers.ValidationError("Polazište i odredište ne mogu biti isti!")
+        
+        return data
+
     def validate_broj_mesta(self, value):
         if value <= 0:
             raise serializers.ValidationError("Broj mesta mora biti veći od nule!")
         return value
-    
-    def validate(self, data):
-        p = data.get('polaziste')
-        o = data.get('odrediste')
-        
-        if p == o:
-            raise serializers.ValidationError("Polazište i odredište ne mogu biti isti!")
-            
-        return data  # Ova linija MORA biti u istoj ravni kao "p = data.get..."
-
 
 class AvioPonudaSerializer(serializers.ModelSerializer):
     # Ova linija povezuje ponudu sa svim detaljima leta
