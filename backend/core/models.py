@@ -17,7 +17,7 @@ class AvioPonuda(models.Model):
     cena = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     klasa = models.CharField(max_length=50, default='Ekonomska')
     def __str__(self):
-        return f"{self.let.relacija} - {self.let.aviokompanija} ({self.klasa}) - {self.cena} RSD"
+        return f"{self.let.relacija} - {self.let.aviokompanija} ({self.klasa}) - {self.cena} EUR"
 
 class Rezervacija(models.Model): 
     korisnik = models.ForeignKey(User, on_delete=models.CASCADE)

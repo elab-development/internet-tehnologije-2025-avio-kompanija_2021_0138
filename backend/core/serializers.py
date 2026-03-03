@@ -13,6 +13,7 @@ class LetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Let
         fields = '__all__'
+        depth = 1  # Ovo omogućava da se prikažu povezani objekti (aerodromi) u detaljima leta
 
     def validate(self, data):
         # Uzimamo podatke direktno iz rečnika
@@ -24,6 +25,20 @@ class LetSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Polazište i odredište ne mogu biti isti!")
         
         return data
+
+
+    def get_cena(self, obj):
+        # 1. Pokušaj da nađeš povezanu ponudu
+        ponuda = obj.ponuda_set.first()
+        if ponuda:
+            return float(ponuda.cena)
+        
+        # 2. Ako let ima svoje polje cena (koje smo dodavali), uzmi njega
+        if hasattr(obj, 'cena') and obj.cena:
+            return float(obj.cena)
+            
+        # 3. Ako baš ništa nema, vrati neku default vrednost da ne bude 0
+        return 120.00
 
     def validate_broj_mesta(self, value):
         if value <= 0:
