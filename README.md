@@ -1,57 +1,47 @@
-# ✈️ Celeste Air - Flight Management System
+CelesteAir - Avio Rezervacije & Analitika ✈️
+Seminarski rad iz Internet Tehnologija koji predstavlja kompletan sistem za pretragu, analizu i vizuelizaciju avio-letova.
 
-Sistem za upravljanje avio-saobraćajem razvijen kao projekat u okviru predmeta Internet tehnologije. Aplikacija omogućava krajnjim korisnicima pretragu letova i upravljanje rezervacijama, dok administratorima pruža uvid u resurse kompanije.
+🚀 Tehnologije
+Frontend: React (TypeScript), Tailwind CSS, Framer Motion.
 
-## 👥 Tim
-* **Teodora Erić** - Frontend razvoj i UI/UX dizajn
-* **Ognjen Obradović** - Backend razvoj i API arhitektura
+Vizuelizacija: Recharts (Analiza cena po destinacijama).
 
-## 🛠️ Implementirane tehnologije
+Backend: Django, Django Rest Framework (Python).
 
-### Frontend (Klijentska strana)
-Aplikacija je realizovana kao **Single Page Application (SPA)** koristeći sledeći stek:
-- **React.js (Vite)** – Za efikasno upravljanje komponentama i brzi razvoj.
-- **TypeScript** – Statistička tipizacija radi osiguravanja stabilnosti koda.
-- **Tailwind CSS** – Za moderan, responzivan dizajn i konzistentan vizuelni identitet.
-- **React Router DOM** – Za upravljanje navigacijom i rutama unutar aplikacije.
+Baza podataka: PostgreSQL.
 
-### Backend (Serverska strana)
-Serverska logika i perzistencija podataka oslanjaju se na:
-- **Django REST Framework (DRF)** – Za izgradnju skalabilnog i standardizovanog API-ja.
-- **Relaciona baza podataka** – Za čuvanje entiteta sistema (letovi, korisnici, rezervacije).
-- **CORS Headers** – Omogućena bezbedna komunikacija između klijenta i servera.
-- **drf-spectacular** – Za automatsku generaciju OpenAPI 3.0 specifikacije.
+DevOps: Docker, GitHub Actions (CI/CD).
 
-## 🐳 Dockerizacija i Pokretanje sistema
+✅ Realizovani Zahtevi za Visoku Ocenu
+Dockerizacija: Kompletan stack (Frontend, Backend, DB) se pokreće putem docker-compose alata.
 
-Projekat je u potpunosti dockerizovan radi lakšeg postavljanja razvojnog okruženja.
+CI/CD Pipeline: Implementiran GitHub Actions workflow koji automatski pokreće testove na develop grani.
 
-### Preduslovi
-- Instaliran **Docker Desktop**
+Eksterni API-ji:
 
-### Koraci za pokretanje
-1. Klonirajte repozitorijum.
-2. Pozicionirajte se u koren projekta (tamo gde je `docker-compose.yml`).
-3. Pokrenite sistem komandom:
-   ```bash
-   docker-compose up --build
+Vremenska prognoza: /api/vreme/{let_id}/.
 
-Nakon podizanja sistema, aplikacija je dostupna na sledećim adresama:
+Konverzija valuta: /api/konvertuj/{let_id}/ (EUR u RSD).
 
-Frontend (React): http://localhost:5173
+Vizuelizacija: Interaktivni grafikon za poređenje cena različitih letova u realnom vremenu.
 
-Backend Admin: http://localhost:8000/admin
+Automatizovani testovi: Napisani unit testovi za validaciju modela i API endpointa (Django TestCase).
 
-Interaktivna Swagger dokumentacija: http://localhost:8000/api/docs
+Git Flow: Projekat koristi strukturirane grane: main, develop i feature/visualisation.
 
-📑 API Specifikacija i Dokumentacija
-Dokumentacija je implementirana pomoću Swagger UI alata u skladu sa OAS 3.0 standardom. Omogućava testiranje API endpoint-a direktno iz browsera, uz punu podršku za JWT autentifikaciju preko "Authorize" dugmeta.
+Bezbednost: Implementirana zaštita od CSRF, XSS i SQL Injection napada, uz pravilno konfigurisan CORS.
 
-🛡️ Bezbednost i Validacija podataka
-Aplikacija ispunjava visoke kriterijume bezbednosti i integriteta podataka:
+API Dokumentacija: Swagger specifikacija dostupna na /swagger/.
 
-CORS zaštita: Restriktivna pravila sprečavaju neovlašćene domene da pristupaju API resursima.
+🛠️ Pokretanje Projekta
+Potrebno je imati instaliran Docker. U korenu repozitorijuma pokrenite:
 
-JWT Autentifikacija: Pristup osetljivim operacijama (POST, PUT, DELETE) zahteva validan token.
+Bash
+docker-compose up --build
+Nakon podizanja sistema:
 
-Poslovna logika i validacija: Implementirani su "custom" validatori u serijalizatorima koji sprečavaju logički neispravne unose (npr. sistem blokira kreiranje leta gde su polazni i dolazni aerodrom identični, vraćajući 400 Bad Request status).
+Sajt: http://localhost:5173
+
+Admin Panel: http://localhost:8000/admin
+
+Swagger API: http://localhost:8000/swagger/
