@@ -44,4 +44,8 @@ Sajt: http://localhost:5173
 
 Admin Panel: http://localhost:8000/admin
 
-Swagger API: http://localhost:8000/swagger/
+Swagger API: http://localhost:8000/swagger/ 
+
+
+//api/docs
+
