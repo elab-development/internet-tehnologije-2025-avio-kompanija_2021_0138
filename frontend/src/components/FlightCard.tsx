@@ -20,7 +20,7 @@ export interface Flight {
 }
 
 interface FlightCardProps {
-  flight: any; // Koristimo any jer podatke mapiramo u Flights.tsx
+  flight: Flight;
   zenMode?: boolean;
   isFavorit?: boolean;
   smartTags?: { label: string; emoji: string }[];

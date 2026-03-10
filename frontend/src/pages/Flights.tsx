@@ -7,7 +7,20 @@ import SortDropdown, { type SortOption } from "@/components/SortDropdown";
 import EmptyState from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 
-const mockFlights: Flight[] = [];
+// API Response interface
+interface ApiFlight {
+  id: number;
+  relacija?: string;
+  aviokompanija?: string;
+  polaziste?: {
+    grad?: string;
+  };
+  odrediste?: {
+    grad?: string;
+  };
+  vreme_polaska?: string;
+  cena?: number;
+}
 
 const Flights = () => {
   const [flights, setFlights] = useState<Flight[]>([]);
@@ -24,7 +37,7 @@ const Flights = () => {
         const response = await fetch("http://127.0.0.1:8000/api/letovi/");       
         if (!response.ok) throw new Error("Greška pri učitavanju letova");
         const data = await response.json();
-       const mapped: Flight[] = (data as any[]).map((item: any) => ({
+       const mapped: Flight[] = (data as ApiFlight[]).map((item: ApiFlight) => ({
   id: item.id,
   
   broj_leta: item.relacija || "Nepoznato", 

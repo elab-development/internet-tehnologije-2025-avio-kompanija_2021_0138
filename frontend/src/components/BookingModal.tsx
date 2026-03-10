@@ -28,6 +28,12 @@ const BookingModal = ({ flight, open, onClose }: BookingModalProps) => {
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
   const { toast } = useToast();
 
+  const handleClose = useCallback(() => {
+    setStep("details");
+    setAgreed(false);
+    onClose();
+  }, [onClose]);
+
   // ACID countdown timer
   useEffect(() => {
     if (!open || step === "success") return;
@@ -48,7 +54,7 @@ const BookingModal = ({ flight, open, onClose }: BookingModalProps) => {
       });
     }, 1000);
     return () => clearInterval(timer);
-  }, [open, step]);
+  }, [open, step, toast, handleClose]);
 
   const formatTime = (s: number) => {
     const m = Math.floor(s / 60);
@@ -74,12 +80,6 @@ const BookingModal = ({ flight, open, onClose }: BookingModalProps) => {
       description: `Vaša karta za let ${flight.polaziste} → ${flight.odrediste} je potvrđena.`,
     });
   };
-
-  const handleClose = useCallback(() => {
-    setStep("details");
-    setAgreed(false);
-    onClose();
-  }, [onClose]);
 
   const timerWarning = timeLeft < 60;
 

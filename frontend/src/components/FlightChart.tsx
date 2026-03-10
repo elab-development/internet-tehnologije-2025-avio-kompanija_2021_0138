@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 
-const FlightChart = ({ data }: { data: any[] }) => {
+const FlightChart = ({ data }: { data: Record<string, unknown>[] }) => {
   // Uzimamo samo prvih 6-7 letova da grafikon ne bude pretrpann
   const chartData = data.slice(0, 7).map(f => ({
     name: f.odrediste,
