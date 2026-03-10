@@ -20,33 +20,24 @@ from rest_framework.routers import DefaultRouter
 from core.views import lista_letova, LetViewSet, AerodromViewSet, AvioPonudaViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from core.views import RegisterView
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from core import views  # OVA LINIJA TI NEDOSTAJE!
-
-
+# 1. Podešavanje rutera za ViewSet-ove (automatski API)
 router = DefaultRouter()
 router.register(r'letovi', LetViewSet)
 router.register(r'aerodromi', AerodromViewSet)
 router.register(r'ponude', AvioPonudaViewSet)
 
-
+# 2. Jedinstvena lista putanja
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # Sve rute iz rutera na http://127.0.0.1:8000/api/...
+    # Sve rute iz rutera će sada biti dostupne na http://127.0.0.1:8000/api/...
     path('api/', include(router.urls)),
     
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-
-    
+    # Posebna funkcija 
     path('api/lista-stara/', lista_letova),
-    
+      #  postojeće rute 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', RegisterView.as_view(), name='auth_register'),
-    path('api/konvertuj/<int:let_id>/', views.konvertuj_cenu, name='konvertuj-cenu'),
-    path('api/vreme/<int:let_id>/', views.vremenska_prognoza, name='vremenska-prognoza'),
-    
-    ]
+]
 

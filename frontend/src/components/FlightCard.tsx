@@ -23,6 +23,7 @@ interface FlightCardProps {
   flight: any; // Koristimo any jer podatke mapiramo u Flights.tsx
   zenMode?: boolean;
   isFavorit?: boolean;
+  smartTags?: { label: string; emoji: string }[];
 }
 
 const statusConfig = {
@@ -49,7 +50,7 @@ const HeartParticle = ({ index }: { index: number }) => {
   );
 };
 
-const FlightCard = ({ flight, zenMode = false, isFavorit = false }: FlightCardProps) => {
+const FlightCard = ({ flight, zenMode = false, isFavorit = false, smartTags = [] }: FlightCardProps) => {
   const [showBooking, setShowBooking] = useState(false);
   const [saved, setSaved] = useState(false);
   const [showHearts, setShowHearts] = useState(false);
@@ -86,6 +87,11 @@ const FlightCard = ({ flight, zenMode = false, isFavorit = false }: FlightCardPr
             </div>
           </div>
           <div className="flex gap-2">
+            {smartTags.map((tag, index) => (
+              <Badge key={index} variant="secondary" className="text-xs">
+                {tag.emoji} {tag.label}
+              </Badge>
+            ))}
             <button onClick={handleSave} className="p-2 hover:bg-white/10 rounded-xl relative">
               <Heart className={`h-4 w-4 ${saved ? "fill-rose text-rose" : "text-muted-foreground"}`} />
               {showHearts && [0,1,2,3,4].map(i => <HeartParticle key={i} index={i} />)}

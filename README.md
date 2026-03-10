@@ -1,51 +1,111 @@
-CelesteAir - Avio Rezervacije & Analitika ✈️
-Seminarski rad iz Internet Tehnologija koji predstavlja kompletan sistem za pretragu, analizu i vizuelizaciju avio-letova.
+# Celeste Air - Flight Management System
 
-🚀 Tehnologije
-Frontend: React (TypeScript), Tailwind CSS, Framer Motion.
+Sistem za upravljanje avio-saobraćajem razvijen kao projekat u okviru predmeta Internet tehnologije. Aplikacija omogućava krajnjim korisnicima pretragu letova i upravljanje rezervacijama, dok administratorima pruža uvid u resurse kompanije.
 
-Vizuelizacija: Recharts (Analiza cena po destinacijama).
+## Tim
+* **Teodora Erić- Frontend razvoj i UI/UX dizajn
+* **Ognjen Obradović- Backend razvoj i API arhitektura
 
-Backend: Django, Django Rest Framework (Python).
+## Implementirane tehnologije
 
-Baza podataka: PostgreSQL.
+### Frontend (Klijentska strana)
+Aplikacija je realizovana kao **Single Page Application (SPA)** koristeći sledeći stek:
+- **React.js (Vite)** – Za efikasno upravljanje komponentama i brzi razvoj.
+- **TypeScript** – Statistička tipizacija radi osiguravanja stabilnosti koda i precizne definicije modela.
+- **Tailwind CSS** – Za moderan, responzivan dizajn i konzistentan vizuelni identitet (Celeste Air brending).
+- **React Router DOM** – Za upravljanje navigacijom i rutama unutar aplikacije.
 
-DevOps: Docker, GitHub Actions (CI/CD).
+### Backend (Serverska strana)
+Serverska logika i perzistencija podataka oslanjaju se na:
+- **Django REST Framework (DRF)** – Za izgradnju skalabilnog i standardizovanog API-ja.
+- **Relaciona baza podataka** – Za čuvanje entiteta sistema (letovi, korisnici, rezervacije).
+- **CORS Headers** – Omogućena bezbedna komunikacija između različitih domena klijenta i servera.
 
-✅ Realizovani Zahtevi za Visoku Ocenu
-Dockerizacija: Kompletan stack (Frontend, Backend, DB) se pokreće putem docker-compose alata.
+## Osnovni moduli i funkcionalnosti
 
-CI/CD Pipeline: Implementiran GitHub Actions workflow koji automatski pokreće testove na develop grani.
+### 1. Dinamička pretraga i filtriranje
+Implementiran je sistem za filtriranje podataka u realnom vremenu korišćenjem React `useState` kuke. Korisnici mogu pretraživati letove na osnovu:
+- Destinacije (polazni i dolazni aerodromi)
+- Opsega cene karte
+- Datuma i vremena poletanja
 
-Eksterni API-ji:
+### 2. Upravljanje podacima (Modeli)
+Baza podataka je strukturirana kroz 5 ključnih, međusobno povezanih entiteta:
+- **User** (Autentifikacija, profili i uloge korisnika)
+- **Flight** (Detaljni podaci o terminima i rutama)
+- **Reservation** (Relacija između korisnika i odabranog leta)
+- **Destination** (Geografski podaci o aerodromima)
+- **Plane** (Tehnički podaci o floti avio-kompanije)
 
-Vremenska prognoza: /api/vreme/{let_id}/.
+### 3. Korisničko iskustvo (UI/UX)
+- **Interaktivni modali**: Upotreba komponenti za unos podataka bez napuštanja trenutnog konteksta stranice.
+- **Validacija**: Provera unosa na frontend i backend nivou radi očuvanja integriteta podataka.
 
-Konverzija valuta: /api/konvertuj/{let_id}/ (EUR u RSD).
+## CI/CD Pipeline
 
-Vizuelizacija: Interaktivni grafikon za poređenje cena različitih letova u realnom vremenu.
+Projekat koristi **GitHub Actions** za automatizovanu integraciju i isporuku (CI/CD). Pipeline se pokreće na svaki push i pull request na `main` i `develop` granama.
 
-Automatizovani testovi: Napisani unit testovi za validaciju modela i API endpointa (Django TestCase).
+### Workflow faze:
 
-Git Flow: Projekat koristi strukturirane grane: main, develop i feature/visualisation.
+#### 1. Test faza
+- Pokreće se na svaki push/PR
+- Testira backend (Django tests) i frontend (Vitest)
+- Proverava linting (ESLint)
+- Koristi Docker Compose za izolovanu testiranje
 
-Bezbednost: Implementirana zaštita od CSRF, XSS i SQL Injection napada, uz pravilno konfigurisan CORS.
+#### 2. Build faza
+- Pokreće se samo na push na `main` granu
+- Gradi Docker image-e za backend i frontend
+- Push-uje image-e na GitHub Container Registry (ghcr.io)
+- Koristi Docker layer caching za brže build-ove
 
-API Dokumentacija: Swagger specifikacija dostupna na /swagger/.
+#### 3. Deploy faza
+- Pokreće se samo na push na `main` granu
+- Pripremljena za deployment na cloud platforme
+- Trenutno sadrži placeholder za deployment komande
 
-🛠️ Pokretanje Projekta
-Potrebno je imati instaliran Docker. U korenu repozitorijuma pokrenite:
+### Lokalni development
 
-Bash
+```bash
+# Development sa Docker Compose
 docker-compose up --build
-Nakon podizanja sistema:
 
-Sajt: http://localhost:5173
+# Production build
+docker-compose -f docker-compose.prod.yml up --build
+```
 
-Admin Panel: http://localhost:8000/admin
+### Deployment
 
-Swagger API: http://localhost:8000/swagger/ 
+Za produkcioni deployment:
 
+1. Kopirajte `.env.example` u `.env` i popunite vrednosti
+2. Podesite SSL sertifikate u `nginx/ssl/`
+3. Ažurirajte domen u `nginx/prod.conf`
+4. Pokrenite: `docker-compose -f docker-compose.prod.yml up -d`
 
-//api/docs
+### Cloud Deployment opcije
+
+Pipeline je pripremljen za deployment na:
+- **AWS**: ECS, EKS, Elastic Beanstalk
+- **Azure**: Container Instances, AKS
+- **Google Cloud**: Cloud Run, GKE
+- **DigitalOcean**: App Platform, Droplets
+- **Heroku**: Container Registry
+
+Za implementaciju deployment-a, dodajte odgovarajuće komande u `deploy` job-u u `.github/workflows/main.yml`.
+
+## Pokretanje
+
+```bash
+# Backend
+cd backend
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+
+# Frontend
+cd frontend
+npm install
+npm run dev
+```
 
