@@ -96,6 +96,7 @@ Za implementaciju deployment-a, dodajte odgovarajuće komande u `deploy` job-u u
 
 ## Pokretanje
 
+### Development
 ```bash
 # Backend
 cd backend
@@ -108,4 +109,28 @@ cd frontend
 npm install
 npm run dev
 ```
+
+### Production Deployment
+
+#### 🚀 **NAJLAKŠI: Railway.app (Besplatno!)**
+```bash
+1. Idi na https://railway.app
+2. Prijavi se sa GitHub-om
+3. "New Project" → "Deploy from GitHub"
+4. Izaberi ovaj repo
+5. Railway automatski deploy-uje sve!
+```
+
+#### 🖥️ **VPS Deployment (Jeftino)**
+```bash
+# Na vašem VPS-u sa Docker-om:
+chmod +x deploy-to-vps.sh
+./deploy-to-vps.sh
+```
+
+#### ☁️ **AWS ECS (Advanced)**
+Detaljne instrukcije: **[AWS_DEPLOYMENT_README.md](AWS_DEPLOYMENT_README.md)**
+
+#### 📄 **Sve opcije:**
+Detaljne instrukcije: **[SIMPLE_DEPLOYMENT.md](SIMPLE_DEPLOYMENT.md)**
 

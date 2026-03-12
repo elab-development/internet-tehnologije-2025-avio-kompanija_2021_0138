@@ -1,0 +1,116 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Celeste Air - RDS PostgreSQL Database'
+
+Parameters:
+  VpcId:
+    Type: String
+    Description: 'VPC ID for the database'
+    Default: 'vpc-12345678'
+
+  SubnetIds:
+    Type: CommaDelimitedList
+    Description: 'Private subnet IDs for RDS'
+    Default: 'subnet-12345678,subnet-87654321'
+
+  DBInstanceClass:
+    Type: String
+    Description: 'RDS instance type'
+    Default: 'db.t3.micro'
+    AllowedValues:
+      - db.t3.micro
+      - db.t3.small
+      - db.t3.medium
+
+  DBName:
+    Type: String
+    Description: 'Database name'
+    Default: 'celesteair'
+
+  DBUsername:
+    Type: String
+    Description: 'Database username'
+    Default: 'celesteuser'
+
+  DBPassword:
+    Type: String
+    Description: 'Database password'
+    NoEcho: true
+
+Resources:
+  # RDS Subnet Group
+  RDSSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet group for Celeste Air RDS
+      SubnetIds: !Ref SubnetIds
+
+  # RDS Security Group
+  RDSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for RDS PostgreSQL
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          SourceSecurityGroupId: !Ref ECSTaskSecurityGroup
+
+  # Allow ECS tasks to access RDS
+  ECSTaskSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for ECS tasks to access RDS
+      VpcId: !Ref VpcId
+
+  # RDS PostgreSQL Instance
+  PostgreSQLDB:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceClass: !Ref DBInstanceClass
+      Engine: postgres
+      EngineVersion: '15.4'
+      DBName: !Ref DBName
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      AllocatedStorage: '20'
+      StorageType: gp3
+      MultiAZ: false
+      PubliclyAccessible: false
+      DBSubnetGroupName: !Ref RDSSubnetGroup
+      VPCSecurityGroups:
+        - !Ref RDSSecurityGroup
+      BackupRetentionPeriod: 7
+      PreferredBackupWindow: '03:00-04:00'
+      PreferredMaintenanceWindow: 'sun:04:00-sun:05:00'
+      DeletionProtection: true
+      Tags:
+        - Key: Name
+          Value: celeste-air-postgres
+        - Key: Environment
+          Value: production
+
+Outputs:
+  DBEndpoint:
+    Description: RDS endpoint
+    Value: !GetAtt PostgreSQLDB.Endpoint.Address
+    Export:
+      Name: CelesteAirDBEndpoint
+
+  DBPort:
+    Description: RDS port
+    Value: !GetAtt PostgreSQLDB.Endpoint.Port
+    Export:
+      Name: CelesteAirDBPort
+
+  DBSecurityGroup:
+    Description: RDS security group ID
+    Value: !Ref RDSSecurityGroup
+    Export:
+      Name: CelesteAirDBSecurityGroup
+
+  ECSTaskSecurityGroup:
+    Description: ECS task security group ID
+    Value: !Ref ECSTaskSecurityGroup
+    Export:
+      Name: CelesteAirECSTaskSecurityGroup

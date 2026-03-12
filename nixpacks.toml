@@ -1,0 +1,39 @@
+# Railway NIXPACKS Configuration
+# https://nixpacks.com/docs/configuration
+
+# Backend (Django)
+[phases.backend]
+name = "backend"
+source = "backend"
+
+[phases.backend.build]
+commands = [
+  "pip install -r requirements.txt",
+  "python manage.py collectstatic --noinput --clear"
+]
+
+[phases.backend.start]
+cmd = "python manage.py migrate && gunicorn flight_backend.wsgi:application --bind 0.0.0.0:$PORT"
+
+[phases.backend.variables]
+DEBUG = "False"
+DJANGO_SETTINGS_MODULE = "flight_backend.settings"
+
+# Frontend (React/Vite)
+[phases.frontend]
+name = "frontend"
+source = "frontend"
+
+[phases.frontend.build]
+commands = [
+  "npm ci",
+  "npm run build"
+]
+
+[phases.frontend.start]
+cmd = "npx serve -s dist -l $PORT"
+
+# Database
+[phases.database]
+name = "database"
+type = "postgresql"

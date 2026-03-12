@@ -1,22 +1,37 @@
-# Koristimo zvaničnu Python sliku
-FROM python:3.10-slim
+# Railway optimized Dockerfile
+FROM python:3.11-slim
 
-# Postavljamo radni direktorijum u kontejneru
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PORT=8000
+
 WORKDIR /app
 
-# Zabranjujemo Pythonu da piše .pyc fajlove i omogućavamo ispis u realnom vremenu
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
 
-# Instaliramo sistemske zavisnosti (ako zatreba za bazu)
-RUN apt-get update && apt-get install -y netcat-traditional
-
-# Kopiramo requirements i instaliramo biblioteke
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Kopiramo ceo kod backenda
+# Copy project
 COPY . .
 
-# Pokrećemo server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Collect static files
+RUN python manage.py collectstatic --noinput --clear
+
+# Create non-root user
+RUN useradd --create-home --shell /bin/bash app \
+    && chown -R app:app /app
+USER app
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:$PORT/api/health/ || exit 1
+
+# Start command
+CMD ["sh", "-c", "python manage.py migrate && gunicorn flight_backend.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --threads 2"]

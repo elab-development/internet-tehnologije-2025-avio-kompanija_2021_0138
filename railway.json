@@ -1,0 +1,60 @@
+{
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "docker-compose -f docker-compose.yml up -d"
+  },
+  "services": [
+    {
+      "name": "backend",
+      "source": {
+        "path": "backend"
+      },
+      "build": {
+        "builder": "NIXPACKS",
+        "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+      },
+      "deploy": {
+        "startCommand": "python manage.py migrate && gunicorn flight_backend.wsgi:application --bind 0.0.0.0:$PORT",
+        "healthcheckPath": "/api/health/",
+        "healthcheckTimeout": 300
+      },
+      "env": {
+        "DEBUG": "False",
+        "DJANGO_SETTINGS_MODULE": "flight_backend.settings",
+        "SECRET_KEY": {
+          "fromSecret": "DJANGO_SECRET_KEY"
+        }
+      }
+    },
+    {
+      "name": "frontend",
+      "source": {
+        "path": "frontend"
+      },
+      "build": {
+        "builder": "NIXPACKS",
+        "buildCommand": "npm install && npm run build"
+      },
+      "deploy": {
+        "startCommand": "npx serve -s dist -l $PORT",
+        "healthcheckPath": "/",
+        "healthcheckTimeout": 300
+      }
+    },
+    {
+      "name": "database",
+      "type": "postgresql",
+      "env": {
+        "DATABASE_URL": {
+          "fromService": {
+            "type": "postgres",
+            "name": "database",
+            "property": "connectionString"
+          }
+        }
+      }
+    }
+  ]
+}

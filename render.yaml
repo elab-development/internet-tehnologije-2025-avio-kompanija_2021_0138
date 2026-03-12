@@ -1,0 +1,40 @@
+services:
+  # Backend API
+  - type: web
+    name: celeste-air-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    envVars:
+      - key: DEBUG
+        value: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DJANGO_SETTINGS_MODULE
+        value: flight_backend.settings
+    healthCheckPath: /api/health/
+    plan: free
+
+  # Frontend App
+  - type: web
+    name: celeste-air-frontend
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile.prod
+    plan: free
+
+  # PostgreSQL Database
+  - type: pserv
+    name: celeste-air-db
+    runtime: docker
+    dockerfilePath: ./Dockerfile.postgres
+    envVars:
+      - key: POSTGRES_DB
+        value: celesteair
+      - key: POSTGRES_USER
+        value: celesteuser
+      - fromSecret: POSTGRES_PASSWORD
+    plan: free
+
+# Optional: Redis for caching
+# - type: redis
+#   name: celeste-air-redis
+#   plan: free

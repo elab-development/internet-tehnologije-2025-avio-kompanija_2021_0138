@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import JsonResponse
 from rest_framework.routers import DefaultRouter
 from core.views import lista_letova, LetViewSet, AerodromViewSet, AvioPonudaViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from core.views import RegisterView
+
+def health_check(request):
+    return JsonResponse({'status': 'healthy'})
 # 1. Podešavanje rutera za ViewSet-ove (automatski API)
 router = DefaultRouter()
 router.register(r'letovi', LetViewSet)
@@ -29,6 +33,9 @@ router.register(r'ponude', AvioPonudaViewSet)
 # 2. Jedinstvena lista putanja
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    # Health check endpoint
+    path('api/health/', health_check, name='health_check'),
     
     # Sve rute iz rutera će sada biti dostupne na http://127.0.0.1:8000/api/...
     path('api/', include(router.urls)),
